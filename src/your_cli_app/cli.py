@@ -1,7 +1,7 @@
 import click
 import logging
 
-from your_cli_app.pidfile import PidFileContext
+from .pidfile import PidFileContext
 
 
 logger = logging.getLogger(__name__)

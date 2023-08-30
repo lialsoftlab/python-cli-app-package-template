@@ -3,7 +3,7 @@ import os
 import signal
 import logging
 
-from your_cli_app.conf import settings
+from .conf import settings
 
 logger = logging.getLogger(__name__)
 

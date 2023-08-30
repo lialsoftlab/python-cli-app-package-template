@@ -11,4 +11,4 @@ LOG_FILE_LEVEL = logging.WARNING
 
 # Путь к PID-файлу.
 PID_FILE_PATH = tempfile.gettempdir()
-PID_FILE_NAME = "your_cli_app.pid"
+PID_FILE_NAME = "{замени-меня-на-нормальное-имя}.pid"

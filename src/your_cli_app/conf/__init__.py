@@ -15,8 +15,8 @@ import os
 
 from dotenv import dotenv_values
 
-from your_cli_app.singleton import Singleton
-from your_cli_app.conf import global_settings
+from ..singleton import Singleton
+from ..conf import global_settings
 
 
 logger = logging.getLogger(__name__)
