@@ -5,7 +5,7 @@
     1. Переменная окружения среды приложения.
     2. Значения переменных окружения из .env-файлов.
     3. Модуль локальных настроек приложения (имя модуля заданное в GP_LOGS_TRANSMITTER_SETTINGS)
-    4. Модуль глобальных настроек приложения (ymgp_log_reader.conf.global_settings)
+    4. Модуль глобальных настроек приложения (your_cli_app.conf.global_settings)
 Агрегированные настройки доступны как объект singleton-класса conf.Settings, для удобства имеется глобальная
 переменная conf.settings с экземпляром данного объекта.
 """
@@ -88,19 +88,19 @@ class Settings(metaclass=Singleton):
             self._try_set_new_value(setting_type, setting, value, "переменной окружения среды")
 
     def __init__(self):
-       self._load_global_settings()
-       self._load_local_settings()
-       self._load_dot_env_settings()
+        self._load_global_settings()
+        self._load_local_settings()
+        self._load_dot_env_settings()
 
-       # Перебираем все атрибуты данного объекта и отбираем приватные атрибуты с настройками.
-       for attr in dir(self):
-           if len(attr) > 1 and attr[0] == '_' and (setting := attr[1:]).isupper():
-               self._try_load_form_app_env_var(setting)
+        # Перебираем все атрибуты данного объекта и отбираем приватные атрибуты с настройками.
+        for attr in dir(self):
+            if len(attr) > 1 and attr[0] == '_' and (setting := attr[1:]).isupper():
+                self._try_load_form_app_env_var(setting)
 
-               # Трансформируем приватные аттрибуты с настройками в get-свойства класса.
-               value = getattr(self, f"_{setting}")
-               delattr(self, f"_{setting}")
-               setattr(Settings, setting, Settings._make_value_property_lambda(value))
+                # Трансформируем приватные аттрибуты с настройками в get-свойства класса.
+                value = getattr(self, f"_{setting}")
+                delattr(self, f"_{setting}")
+                setattr(Settings, setting, Settings._make_value_property_lambda(value))
 
 
 settings = Settings()
