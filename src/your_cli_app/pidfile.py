@@ -16,18 +16,18 @@ class PidFileContext:
     def __enter__(self):
         try:
             self.pid_fd = os.open(self.pid_file, os.O_CREAT | os.O_WRONLY | os.O_EXCL)
-            logger.debug(f"Создан и заблокирован pid-файл `{self.pid_file}`.")
+            logger.debug(f"PID-file created and locked: `{self.pid_file}`.")
         except OSError as e:
             if e.errno == errno.EEXIST:
                 pid = self._check()
                 if pid:
                     self.pid_fd = None
-                    raise ProcessAlreadyRunningException(f"Запущен другой экземпляр программы, pid = {pid}")
+                    raise ProcessAlreadyRunningException(f"Another instance already running with pid = {pid}")
                 else:
                     os.remove(self.pid_file)
-                    logger.warning(f"Удален протухший pid-файл {self.pid_file}.")
+                    logger.warning(f"Stale PID-file deleted {self.pid_file}.")
                     self.pid_fd = os.open(self.pid_file, os.O_CREAT | os.O_WRONLY | os.O_EXCL)
-                    logger.debug(f"Создан и заблокирован pid-файл `{self.pid_file}`.")
+                    logger.debug(f"PID-file created and locked: `{self.pid_file}`.")
             else:
                 raise
 
@@ -52,8 +52,8 @@ class PidFileContext:
             return False
 
     def _remove(self):
-        logging.debug(f"Удаляем pid-файл `{self.pid_file}`.")
         os.remove(self.pid_file)
+        logging.debug(f"PID-file `{self.pid_file}` deleted.")
 
     def _check(self):
         """check if a process is still running the process id is expected to be in pidfile, which should exist.
@@ -64,12 +64,12 @@ class PidFileContext:
                 pid = int(pidstr)
             except ValueError:
                 # not an integer
-                logger.warning(f"Из pid-файла считано значение не являющееся целым числом: {pidstr}")
+                logger.warning(f"Value read from PID-file is not an integer number: {pidstr}")
                 return False
             try:
                 os.kill(pid, signal.SIG_DFL)
             except OSError:
-                logging.debug(f"Не получилось передать сигнал SIG_DFL процессу с pid = {pid}.")
+                logging.debug(f"Transmitting signal SIG_DFL to process with PID = {pid} are failed.")
                 return False
             else:
                 return pid

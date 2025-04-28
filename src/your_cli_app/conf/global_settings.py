@@ -1,14 +1,14 @@
-"""Модуль глобальных/дефолтных настроек программы."""
+"""Global and default settings module."""
 import logging
 import tempfile
 
-# Общий уровень записи сообщений в журнал.
+# General level for all log messages.
 LOG_LEVEL = logging.WARNING
 
-# Имя файла с журналом сообщений и уровень записи сообщений в файл журнала.
+# Log file name and level for log messages going to it.
 LOG_FILE_NAME = ''
 LOG_FILE_LEVEL = logging.WARNING
 
-# Путь к PID-файлу.
+# PID-file path and name.
 PID_FILE_PATH = tempfile.gettempdir()
-PID_FILE_NAME = "{replace-me-to-your-app-name}.pid"
+PID_FILE_NAME = "your_cli_app.pid"
