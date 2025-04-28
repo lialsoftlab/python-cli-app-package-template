@@ -27,7 +27,9 @@ def bootstrap():
     sys.path.insert(0, os.getcwd())
     from .conf import settings
 
-    logger.setLevel(settings.LOG_LEVEL)
+    logger.setLevel(logging.NOTSET)
+    logger.handlers[0].setLevel(settings.LOG_LEVEL)
+
 
     if settings.LOG_FILE_NAME:
         fh = logging.FileHandler(settings.LOG_FILE_NAME, encoding="utf-8")
